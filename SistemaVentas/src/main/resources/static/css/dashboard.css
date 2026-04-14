@@ -1,0 +1,126 @@
+/* ========================================
+   DASHBOARD PAGE STYLES
+   ======================================== */
+
+/* Quick nav cards on dashboard */
+.nav-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 28px;
+}
+.nav-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  transition: all var(--trans);
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+  position: relative;
+  overflow: hidden;
+}
+.nav-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, transparent 60%, rgba(79,156,249,.04));
+  opacity: 0;
+  transition: opacity var(--trans);
+}
+.nav-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 30px rgba(79,156,249,.15);
+}
+.nav-card:hover::after { opacity: 1; }
+.nav-card-icon {
+  width: 46px; height: 46px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.nav-card-icon.blue   { background: var(--accent-dim);  color: var(--accent); }
+.nav-card-icon.green  { background: var(--green-dim);   color: var(--green); }
+.nav-card-icon.yellow { background: var(--yellow-dim);  color: var(--yellow); }
+.nav-card-icon.red    { background: var(--red-dim);     color: var(--red); }
+.nav-card-icon.purple { background: rgba(167,139,250,.12); color: #a78bfa; }
+.nav-card h3 {
+  font-family: var(--font-display);
+  font-size: .9rem;
+  font-weight: 600;
+}
+.nav-card p {
+  font-size: .75rem;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+.nav-card-arrow {
+  color: var(--text-muted);
+  margin-top: auto;
+  transition: transform var(--trans), color var(--trans);
+}
+.nav-card:hover .nav-card-arrow {
+  transform: translateX(4px);
+  color: var(--accent);
+}
+
+/* Recent activity table */
+.recent-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+@media (max-width: 900px) {
+  .recent-section { grid-template-columns: 1fr; }
+}
+
+/* Dashboard welcome banner */
+.welcome-banner {
+  background: linear-gradient(135deg, var(--bg-elevated) 0%, rgba(79,156,249,.06) 100%);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 26px 28px;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.welcome-text h2 {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+.welcome-text p {
+  font-size: .82rem;
+  color: var(--text-secondary);
+}
+.welcome-text .highlight { color: var(--accent); }
+.welcome-badge {
+  background: var(--accent-dim);
+  border: 1px solid rgba(79,156,249,.3);
+  border-radius: var(--radius-md);
+  padding: 10px 16px;
+  text-align: center;
+  flex-shrink: 0;
+}
+.welcome-badge .date-label {
+  font-size: .65rem;
+  font-family: var(--font-mono);
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: .08em;
+}
+.welcome-badge .date-value {
+  font-family: var(--font-display);
+  font-size: .95rem;
+  font-weight: 700;
+  color: var(--accent);
+}

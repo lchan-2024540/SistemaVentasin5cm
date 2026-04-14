@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ventas — SistemaVentas</title>
+  <link rel="stylesheet" th:href="@{/css/global.css}"/>
+  <link rel="stylesheet" th:href="@{/css/entities.css}"/>
+</head>
+<body>
+<div class="app-layout">
+
+  <div th:replace="~{fragments/sidebar :: sidebar}"></div>
+
+  <div class="main-content">
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="sidebar-toggle" id="sidebarToggle">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/>
+            <line x1="3" y1="18" x2="21" y2="18"/>
+          </svg>
+        </button>
+        <span class="topbar-title">Ventas</span>
+      </div>
+      <div class="topbar-right">
+        <div class="breadcrumb">
+          <span>Gestión</span>
+          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"
+            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="9 18 15 12 9 6"/>
+          </svg>
+          <span>Ventas</span>
+        </div>
+      </div>
+    </header>
+
+    <main class="page-body">
+      <div class="page-header fade-up">
+        <div class="page-header-left">
+          <h2>Ventas</h2>
+          <p>Registro y administración de ventas</p>
+        </div>
+        <div class="page-header-right">
+          <button class="btn btn-primary" id="btnNuevaVenta">
+            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24"
+              fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+            </svg>
+            Nueva Venta
+          </button>
+        </div>
+      </div>
+
+      <div class="card fade-up">
+        <div class="table-toolbar">
+          <div class="table-toolbar-left">
+            <div class="filter-chips">
+              <button class="chip active" data-filter="todas">Todas</button>
+              <button class="chip" data-filter="activa">Activas</button>
+              <button class="chip" data-filter="anulada">Anuladas</button>
+            </div>
+          </div>
+          <div class="table-toolbar-right">
+            <div class="search-bar">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+              </svg>
+              <input type="text" id="searchInput" placeholder="Buscar venta..."/>
+            </div>
+            <span class="row-count" id="rowCount">— registros</span>
+          </div>
+        </div>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Fecha</th>
+                <th>Cliente</th>
+                <th>Usuario</th>
+                <th>Total</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="ventasTbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal-overlay" id="ventaModal">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title" id="modalTitle">Nueva Venta</span>
+      <button class="modal-close" id="modalClose">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+          fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form id="ventaForm" autocomplete="off">
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label" for="fieldFecha">Fecha *</label>
+            <input type="date" id="fieldFecha" class="form-control" required/>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="fieldTotal">Total (Q) *</label>
+            <input type="number" step="0.01" min="0" id="fieldTotal" class="form-control" placeholder="0.00" required/>
+          </div>
+          <div class="form-group" style="grid-column:1/-1">
+            <label class="form-label" for="fieldCliente">Cliente *</label>
+            <select id="fieldCliente" class="form-control" required>
+              <option value="">-- Selecciona cliente --</option>
+            </select>
+          </div>
+          <div class="form-group" style="grid-column:1/-1">
+            <label class="form-label" for="fieldUsuario">Usuario Vendedor *</label>
+            <select id="fieldUsuario" class="form-control" required>
+              <option value="">-- Selecciona usuario --</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="fieldEstado">Estado *</label>
+            <select id="fieldEstado" class="form-control" required>
+              <option value="1">Activa</option>
+              <option value="0">Anulada</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-actions">
+          <button type="button" class="btn btn-secondary" id="btnCancelForm">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Guardar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script th:src="@{/js/app.js}"></script>
+<script th:src="@{/js/ventas.js}"></script>
+</body>
+</html>

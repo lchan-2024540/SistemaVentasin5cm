@@ -1,4 +1,5 @@
 package com.lchan.SistemaVentas.Entity;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -25,6 +26,12 @@ public class Usuarios {
     @Column(name = "estado")
     private Integer estado;
 
+    @Lob
+    @Column(name = "foto_perfil", columnDefinition = "LONGBLOB")
+    private byte[] fotoPerfil;
+
+    // ── Getters & Setters ──────────────────────
+
     public Integer getCodigoUsuario() { return codigoUsuario; }
     public void setCodigoUsuario(Integer codigoUsuario) { this.codigoUsuario = codigoUsuario; }
 
@@ -42,4 +49,7 @@ public class Usuarios {
 
     public Integer getEstado() { return estado; }
     public void setEstado(Integer estado) { this.estado = estado; }
+
+    public byte[] getFotoPerfil() { return fotoPerfil; }
+    public void setFotoPerfil(byte[] fotoPerfil) { this.fotoPerfil = fotoPerfil; }
 }

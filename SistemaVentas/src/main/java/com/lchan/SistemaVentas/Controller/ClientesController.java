@@ -1,9 +1,11 @@
 package com.lchan.SistemaVentas.Controller;
+
 import com.lchan.SistemaVentas.Entity.Clientes;
 import com.lchan.SistemaVentas.Service.ClientesService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
@@ -24,28 +26,37 @@ public class ClientesController {
     @GetMapping("/{dpiCliente}")
     public ResponseEntity<Clientes> getClientesById(@PathVariable Integer dpiCliente) {
         Clientes cliente = clientesService.getClientesById(dpiCliente);
-        if (cliente != null) {
-            return ResponseEntity.ok(cliente);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        return cliente != null ? ResponseEntity.ok(cliente) : ResponseEntity.notFound().build();
     }
 
     @PostMapping
-    public ResponseEntity<Clientes> createClientes(@RequestBody Clientes clientes) {
-        Clientes created = clientesService.saveClientes(clientes);
-        return ResponseEntity.status(HttpStatus.CREATED).body(created);
+    public ResponseEntity<?> createClientes(@RequestBody Clientes clientes) {
+        try {
+            Clientes created = clientesService.saveClientes(clientes);
+            return ResponseEntity.status(HttpStatus.CREATED).body(created);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
     }
 
     @PutMapping("/{dpiCliente}")
-    public ResponseEntity<Clientes> updateClientes(@PathVariable Integer dpiCliente, @RequestBody Clientes clientes) {
-        Clientes updated = clientesService.updateClientes(dpiCliente, clientes);
-        return ResponseEntity.ok(updated);
+    public ResponseEntity<?> updateClientes(@PathVariable Integer dpiCliente,
+                                            @RequestBody Clientes clientes) {
+        try {
+            Clientes updated = clientesService.updateClientes(dpiCliente, clientes);
+            return ResponseEntity.ok(updated);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
     }
 
     @DeleteMapping("/{dpiCliente}")
     public ResponseEntity<String> deleteClientes(@PathVariable Integer dpiCliente) {
-        clientesService.deleteClientes(dpiCliente);
-        return ResponseEntity.ok("Cliente eliminado con éxito");
+        try {
+            clientesService.deleteClientes(dpiCliente);
+            return ResponseEntity.ok("Cliente eliminado con éxito");
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
     }
 }
